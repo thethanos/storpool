@@ -5,7 +5,7 @@ CC := gcc
 INCLUDE := include
 SRC := src
 
-CFLAGS := -I$(INCLUDE) -O3 -Wall -Wextra
+CFLAGS := -I$(INCLUDE) -O3 -Wall -Wextra -fsanitize=address
 LDFLAGS := -fsanitize=address
 
 all: counter test_process_buffer
