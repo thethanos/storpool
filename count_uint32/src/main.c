@@ -6,6 +6,8 @@
 #include <fcntl.h>
 #include <assert.h>
 
+#define FILENAME 1
+
 int main(int argc, char** argv) {
 
     if (argc < 2) {
@@ -20,7 +22,7 @@ int main(int argc, char** argv) {
     uint64_t* seen_once = NULL;
     uint64_t* unique = NULL;
 
-    int input_fd = open(argv[1], O_RDONLY);
+    int input_fd = open(argv[FILENAME], O_RDONLY);
     if (input_fd < 0) {
         perror("Failed to open input file.");
         goto clean;

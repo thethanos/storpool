@@ -20,7 +20,12 @@ int hash_table_add_or_update_item(hash_table_entry** head, const char* key, size
         if (entry == NULL) {
             return -1;
         }
-        entry->key = strndup(key, key_len);
+        char* key_copy = strndup(key, key_len);
+        if (key_copy == NULL) {
+            free(entry);
+            return -1;
+        }
+        entry->key = key_copy;
         entry->key_len = key_len;
         entry->value = 1;
         HASH_ADD_KEYPTR(hh, *head, entry->key, key_len, entry);
@@ -49,5 +54,4 @@ void hash_table_clear(hash_table_entry* head) {
         free(current->key);
         free(current);
     }
-    free(head);
 }

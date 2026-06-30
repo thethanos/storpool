@@ -9,15 +9,22 @@
 #include <string.h>
 #include <stdio.h>
 
+#define FILENAME 1
+#define MODEL 4
 
-int main(void) {
+int main(int argc, char** argv) {
+
+    if (argc < 2) {
+        printf("No input file provided!\n");
+        return 1;
+    }
 
     char* json = NULL;
     hash_table_entry *head = NULL;
-    const size_t max_tokens = 16;
+    const size_t max_tokens = 10;
     jsmntok_t tokens[max_tokens];
 
-    int input_fd = open("bigf.json", O_RDONLY);
+    int input_fd = open(argv[FILENAME], O_RDONLY);
     if (input_fd < 0) {
         perror("Failed to open file");
         return 1;
@@ -30,7 +37,7 @@ int main(void) {
     }
 
 
-    json = (char*)mmap(NULL, file_stat.st_size, PROT_READ, MAP_SHARED, input_fd, 0);
+    json = (char*)mmap(NULL, file_stat.st_size, PROT_READ, MAP_PRIVATE, input_fd, 0);
     if (json == MAP_FAILED) {
         perror("Failed to map file");
         goto clean;
@@ -62,7 +69,7 @@ int main(void) {
             goto clean;
         }
 
-        hash_table_add_or_update_item(&head, start + tokens[4].start, tokens[4].end - tokens[4].start);
+        hash_table_add_or_update_item(&head, start + tokens[MODEL].start, tokens[MODEL].end - tokens[MODEL].start);
     }
 
     hash_table_print(head); 
