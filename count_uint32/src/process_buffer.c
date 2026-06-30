@@ -5,16 +5,16 @@
 
 const size_t total_chunks = (1ULL << 32) / 64; 
 
-bool check_bit(const uint64_t* bitmap_chunk, const uint8_t bit_num) {
+static bool check_bit(const uint64_t* bitmap_chunk, const uint8_t bit_num) {
     return *bitmap_chunk & (1ULL << bit_num);
 }
 
-void set_bit(uint64_t* bitmap_chunk, const uint8_t bit_num) {
+static void set_bit(uint64_t* bitmap_chunk, const uint8_t bit_num) {
     uint64_t bit_mask = (1ULL << bit_num);
     *bitmap_chunk |= bit_mask;
 }
 
-void reset_bit(uint64_t* bitmap_chunk, const uint8_t bit_num) {
+static void reset_bit(uint64_t* bitmap_chunk, const uint8_t bit_num) {
     uint64_t bit_mask = ~(1ULL << bit_num);
     *bitmap_chunk &= bit_mask;
 }

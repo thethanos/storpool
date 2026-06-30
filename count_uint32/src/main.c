@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
-
+#include <assert.h>
 
 int main(int argc, char** argv) {
 
@@ -13,9 +13,9 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    // big buffer to reduce amount of system calls
-    // if we are poor, this constant can be adjusted
-    const size_t buffer_size = 104857610; 
+    const size_t buffer_size = 4 * 1024;
+    static_assert((buffer_size % sizeof(uint32_t)) == 0);
+
     uint32_t* buffer = NULL;
     uint64_t* seen_once = NULL;
     uint64_t* unique = NULL;
@@ -25,6 +25,8 @@ int main(int argc, char** argv) {
         perror("Failed to open input file.");
         goto clean;
     }
+
+    posix_fadvise(input_fd, 0, 0, POSIX_FADV_SEQUENTIAL);
 
     seen_once = calloc(total_chunks, sizeof(uint64_t));
     if (seen_once == NULL) {
@@ -38,7 +40,7 @@ int main(int argc, char** argv) {
         goto clean;
     }
 
-    buffer = malloc(buffer_size * sizeof(uint32_t));
+    buffer = malloc(buffer_size);
     if (buffer == NULL) {
         perror("Failed to allocate read buffer.");
         goto clean;
@@ -46,14 +48,14 @@ int main(int argc, char** argv) {
 
     ssize_t bytes_read = 0;
     do {
-        bytes_read = read(input_fd, buffer, buffer_size * sizeof(uint32_t));
+        bytes_read = read(input_fd, buffer, buffer_size);
         if (bytes_read < 0) {
             perror("Failed to read from file.");
             goto clean;
         }
 
         if (bytes_read > 0) {
-            printf("numbers being processed: %zd\n", bytes_read / sizeof(uint32_t));
+            //printf("numbers being processed: %zu\n", bytes_read / sizeof(uint32_t));
             int res = process_buffer(buffer, bytes_read / sizeof(uint32_t), unique, seen_once);
             if (res == -1) {
                 perror("process_buffer");
@@ -69,8 +71,8 @@ int main(int argc, char** argv) {
         seen_once_count += __builtin_popcountll(seen_once[i]);
     }
 
-    printf("%zd unique numbers\n", unique_count);
-    printf("%zd numbers seen only once\n", seen_once_count);
+    printf("%zu unique numbers\n", unique_count);
+    printf("%zu numbers seen only once\n", seen_once_count);
 
 clean:
     free(buffer);
