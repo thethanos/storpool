@@ -54,10 +54,8 @@ int main(int argc, char** argv) {
 
         end = memchr(start, '}', file_end - start);
         if (end == NULL) {
-            // I do not know if the last json object broken intentionally or not
-            // but i will assume that not intentionally and just break the loop here
-            // Normally, there should be json validation before processing, 
-            // since corrupted json objects will affect the outcome and cannot be ignored
+            // if we cannot find the end of the object, it means the JSON is invalid
+            // normally, we would validate the JSON before processing it
             // but it is out of scope of this task
             break;
         }
