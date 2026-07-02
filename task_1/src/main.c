@@ -58,7 +58,6 @@ int main(int argc, char** argv) {
         }
 
         if (bytes_read > 0) {
-            //printf("numbers being processed: %zu\n", bytes_read / sizeof(uint32_t));
             int res = process_buffer(buffer, bytes_read / sizeof(uint32_t), unique, seen_once);
             if (res == -1) {
                 perror("process_buffer");
