@@ -1,3 +1,4 @@
+#define _GNU_SOURCE
 #include "process_buffer.h"
 
 #include <stdio.h>

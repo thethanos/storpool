@@ -8,7 +8,7 @@
 #include <stdlib.h>
 
 
-void test_null_arguments()
+void test_null_arguments(void)
 {
     uint32_t buffer[] = {1};
     uint64_t unique[2] = {0};
@@ -30,7 +30,7 @@ void test_null_arguments()
 }
 
 
-void test_empty_buffer()
+void test_empty_buffer(void)
 {
     uint32_t buffer[] = {};
 
@@ -46,7 +46,7 @@ void test_empty_buffer()
 }
 
 
-void test_single_number()
+void test_single_number(void)
 {
     uint32_t buffer[] = {10};
 
@@ -62,7 +62,7 @@ void test_single_number()
 }
 
 
-void test_duplicate()
+void test_duplicate(void)
 {
     uint32_t buffer[] = {10, 10};
 
@@ -78,7 +78,7 @@ void test_duplicate()
 }
 
 
-void test_multiple_duplicates()
+void test_multiple_duplicates(void)
 {
     uint32_t buffer[] = {10, 10, 10};
 
@@ -94,7 +94,7 @@ void test_multiple_duplicates()
 }
 
 
-void test_mixed_values()
+void test_mixed_values(void)
 {
     uint32_t buffer[] = {1, 1, 2, 3, 4, 4, 5};
 
@@ -110,7 +110,7 @@ void test_mixed_values()
 }
 
 
-void test_multiple_chunks()
+void test_multiple_chunks(void)
 {
     uint32_t buffer[] = {10, 64, 70, 64};
 
@@ -128,7 +128,7 @@ void test_multiple_chunks()
     printf("test_multiple_chunks passed\n");
 }
 
-int main()
+int main(void)
 {
     test_null_arguments();
     test_empty_buffer();

@@ -1,6 +1,6 @@
 #define JSMN_STATIC
 #include "jsmn.h"
-#include "hash_table.h"
+#include "counter.h"
 
 #include <sys/mman.h>
 #include <fcntl.h>
@@ -20,7 +20,7 @@ int main(int argc, char** argv) {
     }
 
     char* json = NULL;
-    hash_table_entry *head = NULL;
+    counter_entry* head = NULL;
     const size_t max_tokens = 10;
     jsmntok_t tokens[max_tokens];
 
@@ -67,13 +67,13 @@ int main(int argc, char** argv) {
             goto clean;
         }
 
-        hash_table_add_or_update_item(&head, start + tokens[MODEL].start, tokens[MODEL].end - tokens[MODEL].start);
+        counter_increment(&head, start + tokens[MODEL].start, tokens[MODEL].end - tokens[MODEL].start);
     }
 
-    hash_table_print(head); 
+    counter_print(head); 
 
 clean:
-    hash_table_clear(head);
+    counter_clear(&head);
     munmap(json, file_stat.st_size);
     close(input_fd);
 

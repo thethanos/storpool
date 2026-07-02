@@ -1,8 +1,9 @@
-#include "hash_table.h"
+#include "counter.h"
+#include "uthash.h"
 
 #include <stdio.h>
 
-struct hash_table_entry {
+struct counter_entry {
     char* key;
     size_t key_len;
     size_t value;
@@ -10,13 +11,13 @@ struct hash_table_entry {
 };
 
 
-int hash_table_add_or_update_item(hash_table_entry** head, const char* key, size_t key_len) {
-    hash_table_entry *entry = NULL;
+int counter_increment(counter_entry** head, const char* key, size_t key_len) {
+    counter_entry *entry = NULL;
     HASH_FIND(hh, *head, key, key_len, entry);
     if (entry != NULL) {
         entry->value += 1;
     } else {
-        entry = malloc(sizeof(hash_table_entry));
+        entry = malloc(sizeof(counter_entry));
         if (entry == NULL) {
             return -1;
         }
@@ -33,13 +34,13 @@ int hash_table_add_or_update_item(hash_table_entry** head, const char* key, size
     return 0;
 }
 
-void hash_table_print(hash_table_entry* head) {
+void counter_print(counter_entry* head) {
     unsigned int count = HASH_COUNT(head);
     printf("Total entries: %u\n", count);
 
-    hash_table_entry *current, *tmp;
+    counter_entry *current, *tmp;
     HASH_ITER(hh, head, current, tmp) {
-        printf("Key: %.*s, Value: %zu\n", 
+        printf("Model: %.*s, Count: %zu\n", 
                (int)current->key_len,
                current->key, 
                current->value);
@@ -47,10 +48,10 @@ void hash_table_print(hash_table_entry* head) {
 }
 
 
-void hash_table_clear(hash_table_entry* head) {
-    hash_table_entry *current, *tmp;
-    HASH_ITER(hh, head, current, tmp) {
-        HASH_DEL(head, current);
+void counter_clear(counter_entry** head) {
+    counter_entry *current, *tmp;
+    HASH_ITER(hh, *head, current, tmp) {
+        HASH_DEL(*head, current);
         free(current->key);
         free(current);
     }
