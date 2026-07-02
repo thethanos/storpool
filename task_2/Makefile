@@ -6,8 +6,8 @@ SRC := src
 INCLUDE := include
 DEPS := deps
 
-CFLAGS := -I$(INCLUDE) -I$(DEPS) -O3 -Wall -Wextra -Wstrict-prototypes -fsanitize=address
-LDFLAGS := -fsanitize=address
+CFLAGS := -I$(INCLUDE) -I$(DEPS) -O3 -Wall -Wextra -Wstrict-prototypes #-fsanitize=address
+LDFLAGS := #-fsanitize=address
 
 
 all: processor test_counter
