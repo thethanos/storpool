@@ -10,9 +10,9 @@ void test_increment_new(void) {
 
     assert(HASH_COUNT(head) == 0);
 
-    counter_increment(&head, "value1", strlen("value1"));
-    counter_increment(&head, "value2", strlen("value2"));
-    counter_increment(&head, "value3", strlen("value3"));
+    assert(counter_increment(&head, "value1", strlen("value1")) == 0);
+    assert(counter_increment(&head, "value2", strlen("value2")) == 0);
+    assert(counter_increment(&head, "value3", strlen("value3")) == 0);
 
     assert(HASH_COUNT(head) == 3);
 
@@ -32,12 +32,12 @@ void test_increment_existing(void) {
 
     assert(HASH_COUNT(head) == 0);
 
-    counter_increment(&head, "value1", strlen("value1"));
-    counter_increment(&head, "value1", strlen("value1"));
-    counter_increment(&head, "value1", strlen("value1"));
-    counter_increment(&head, "value1", strlen("value1"));
-    counter_increment(&head, "value1", strlen("value1"));
-    counter_increment(&head, "value1", strlen("value1"));
+    assert(counter_increment(&head, "value1", strlen("value1")) == 0);
+    assert(counter_increment(&head, "value1", strlen("value1")) == 0);
+    assert(counter_increment(&head, "value1", strlen("value1")) == 0);
+    assert(counter_increment(&head, "value1", strlen("value1")) == 0);
+    assert(counter_increment(&head, "value1", strlen("value1")) == 0);
+    assert(counter_increment(&head, "value1", strlen("value1")) == 0);
 
     assert(HASH_COUNT(head) == 1);
 
@@ -52,12 +52,21 @@ void test_increment_existing(void) {
     printf("test_increment_existing passed\n");
 }
 
+void test_null_key(void) {
+    counter_entry* head = NULL;
+
+    assert(counter_increment(&head, NULL, 0) == -1);
+
+    counter_clear(&head);
+
+    printf("test_null_key passed\n");
+}
+
 void test_empty_key(void) {
     counter_entry* head = NULL;
 
-    counter_increment(&head, "", 0);
+    assert(counter_increment(&head, "", 0) == 0);
 
-    counter_clear(&head);
     counter_clear(&head);
 
     printf("test_empty_key passed\n");
@@ -68,9 +77,9 @@ void test_clear(void) {
 
     assert(HASH_COUNT(head) == 0);
 
-    counter_increment(&head, "value1", strlen("value1"));
-    counter_increment(&head, "value2", strlen("value2"));
-    counter_increment(&head, "value3", strlen("value3"));
+    assert(counter_increment(&head, "value1", strlen("value1")) == 0);
+    assert(counter_increment(&head, "value2", strlen("value2")) == 0);
+    assert(counter_increment(&head, "value3", strlen("value3")) == 0);
 
     assert(HASH_COUNT(head) == 3);
 
@@ -84,8 +93,7 @@ void test_clear(void) {
 void test_double_clear(void) {
     counter_entry* head = NULL;
 
-    counter_increment(&head, "value1", strlen("value1"));
-
+    assert(counter_increment(&head, "value1", strlen("value1")) == 0);
 
     counter_clear(&head);
     counter_clear(&head);
@@ -96,6 +104,7 @@ void test_double_clear(void) {
 int main(void) {
     test_increment_new();
     test_increment_existing();
+    test_null_key();
     test_empty_key();
     test_clear();
     test_double_clear();

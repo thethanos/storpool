@@ -12,6 +12,9 @@ struct counter_entry {
 
 
 int counter_increment(counter_entry** head, const char* key, size_t key_len) {
+    if (key == NULL) {
+        return -1;
+    }
     counter_entry *entry = NULL;
     HASH_FIND(hh, *head, key, key_len, entry);
     if (entry != NULL) {
