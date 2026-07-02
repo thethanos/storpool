@@ -52,6 +52,17 @@ void test_increment_existing(void) {
     printf("test_increment_existing passed\n");
 }
 
+void test_empty_key(void) {
+    counter_entry* head = NULL;
+
+    counter_increment(&head, "", 0);
+
+    counter_clear(&head);
+    counter_clear(&head);
+
+    printf("test_empty_key passed\n");
+}
+
 void test_clear(void) {
     counter_entry* head = NULL;
 
@@ -70,9 +81,23 @@ void test_clear(void) {
     printf("test_clear passed\n");
 }
 
+void test_double_clear(void) {
+    counter_entry* head = NULL;
+
+    counter_increment(&head, "value1", strlen("value1"));
+
+
+    counter_clear(&head);
+    counter_clear(&head);
+
+    printf("test_double_clear passed\n");
+}
+
 int main(void) {
     test_increment_new();
     test_increment_existing();
+    test_empty_key();
     test_clear();
+    test_double_clear();
     return 0;
 }
