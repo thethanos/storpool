@@ -16,7 +16,7 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    const size_t buffer_size = 4 * 1024;
+    const size_t buffer_size = 100 * 1024;
     static_assert((buffer_size % sizeof(uint32_t)) == 0);
 
     uint32_t* buffer = NULL;
